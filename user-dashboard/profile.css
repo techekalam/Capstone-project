@@ -1,4 +1,4 @@
-﻿*{
+*{
     margin:0;
     padding:0;
     box-sizing:border-box;
@@ -13,7 +13,9 @@ background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url("../logi
     display:flex;
     justify-content: center;
     align-items:center;
-    height:100vh;
+    /* Use min-height instead of height:100vh to prevent content clipping on mobile */
+    min-height: 100vh;
+    padding: 16px;
 }
 .profile {
     background:rgba(10,25,47,0.85);
@@ -179,4 +181,48 @@ button:hover {
 }
 button:hover{
     opacity:0.9
+}
+
+/* ===== RESPONSIVE: MOBILE ===== */
+@media (max-width: 480px) {
+    .profile {
+        padding: 20px 16px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .profile img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .buttons {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    button {
+        flex: 1;
+        min-width: 80px;
+        padding: 10px;
+        font-size: 11px;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    .info p {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 360px) {
+    .buttons {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+    }
 }

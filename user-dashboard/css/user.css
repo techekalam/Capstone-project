@@ -9,7 +9,8 @@ body {
     background-size:cover;
     background-position:center;
     background-repeat:no-repeat;
-    background-attachment:fixed;
+    /* background-attachment: fixed causes iOS Safari rendering bug; use local */
+    background-attachment:local;
     font-family:Arial,sans-serif;
 }
 
@@ -46,7 +47,7 @@ body {
     display:flex;
     align-items:center;
     flex-wrap:wrap;
-    gap:2rem;
+    gap:1.5rem;
 }
 
 .nav-links a {

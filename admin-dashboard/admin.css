@@ -32,7 +32,8 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed;
+    /* background-attachment: fixed causes iOS Safari rendering bug */
+    background-attachment: local;
 }
 
 .app-container {
@@ -130,6 +131,8 @@ body {
     position: sticky;
     top: 0;
     flex: 0 0 260px;
+    /* Prevent the logo text from breaking layout on small nav */
+    overflow: hidden;
 }
 .top-nav .nav-links {
     display: flex;

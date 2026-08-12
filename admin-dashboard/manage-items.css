@@ -12,7 +12,8 @@ body {
 
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
+    /* background-attachment: fixed causes iOS Safari rendering bug; use local */
+    background-attachment: local;
 
 }
 .manage-items-container {

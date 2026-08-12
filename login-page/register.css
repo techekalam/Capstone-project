@@ -90,7 +90,7 @@ body {
 /* ===== INPUT FIELDS ===== */
 .user-details .input-box input {
     height: 44px;
-    width: 80%;
+    width: 100%;
     outline: none;
     font-size: 15px;
     border-radius: 20px;
@@ -114,7 +114,7 @@ body {
 /* ===== SELECT DROPDOWN (to match input fields) ===== */
 .user-details .input-box select {
     height: 44px;
-    width: 80%;
+    width: 100%;
     outline: none;
     font-size: 15px;
     border-radius: 20px;
@@ -138,7 +138,7 @@ body {
 /* ===== PASSWORD EYE ICON ===== */
 .password-wrapper {
     position: relative;
-    width: 80%;
+    width: 100%;
     display: flex;
     align-items: center;
 }
@@ -274,7 +274,8 @@ form .button button:active {
 @media (max-width: 480px) {
     body {
         padding: 12px;
-        background-attachment: fixed;
+        /* fixed attachment causes rendering bugs on iOS Safari */
+        background-attachment: scroll;
     }
 
     .container {

@@ -32,6 +32,7 @@ body {
     padding: 20px 5%;
     background-color: var(--white);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    position: relative;
 }
 
 .navbar .logo a {
@@ -273,7 +274,7 @@ body {
     .nav-links {
         display: none;
         position: absolute;
-        top: 80px;
+        top: 70px;
         left: 0;
         right: 0;
         flex-direction: column;
@@ -395,6 +396,8 @@ body {
     body {
         background-size: 100% auto;
         background-position: top center;
+        /* background-attachment: fixed causes iOS Safari rendering bug; use local */
+        background-attachment: local;
     }
 
     .foot footer {
@@ -412,5 +415,28 @@ body {
 
     .hero h1 {
         font-size: 3.5rem;
+    }
+}
+/* ─── Very Small Mobile (max-width: 320px) ─── */
+@media (max-width: 320px) {
+    .navbar .logo h1 {
+        font-size: 0.85rem;
+    }
+
+    .navbar .logo img {
+        height: 28px !important;
+    }
+
+    .hero h1 {
+        font-size: 1.4rem;
+    }
+
+    .hero p {
+        font-size: 0.8rem;
+    }
+
+    .search-input, .search-category, .btn-search {
+        padding: 10px;
+        font-size: 0.85rem;
     }
 }

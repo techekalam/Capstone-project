@@ -8,6 +8,7 @@ body {
   background-size:cover;
   background-repeat: no-repeat;
   background-position: center;
+  /* background-attachment: fixed causes iOS Safari rendering bug; use local */
   background-attachment: local;
   margin: 0;
   min-height: 100vh;
@@ -106,7 +107,7 @@ button.secondary {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 5rem;
+  gap: 1.5rem;
   
   
 }
