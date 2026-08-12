@@ -1,23 +1,28 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>My Reports</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Reports - CUU Lost &amp; Found</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <nav class="navbar">
-    <div class="nav-links">
-      <a href="dashboard.html">Dashboard</a>
-      <a href="user recent activity.html">Recent Activity</a>
-      <a href="report.html">Report Item</a>
-      <a href="items.html">Browse Items</a>
-      <a href="my-report.html">My Reports</a>
-      <a href="../homepage/index.html">Home</a>
-      <a href="./profile.html">Profile</a>
-       <button id="logoutBtn" type="button">Log Out</button>
+    <div class="nav-left">
+      <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav-links">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="user recent activity.html">Recent Activity</a>
+        <a href="report.html">Report Item</a>
+        <a href="items.html">Browse Items</a>
+        <a href="my-report.html">My Reports</a>
+        <a href="../homepage/index.html">Home</a>
+        <a href="./profile.html">Profile</a>
+         <button id="logoutBtn" type="button">Log Out</button>
+      </div>
     </div>
- 
   </nav>
 
   <div class="dashboard-container">
@@ -28,8 +33,11 @@
   </div>
    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
         <script src="../admin-dashboard/supabase.js"></script>
-
- 
   <script src="css/js/script.js"></script>
+  <script>
+    const hb = document.getElementById('hamburger');
+    const nl = document.getElementById('nav-links');
+    if (hb && nl) hb.addEventListener('click', () => nl.classList.toggle('open'));
+  </script>
 </body>
 </html>
