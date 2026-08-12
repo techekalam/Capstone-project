@@ -248,9 +248,7 @@ button:hover{
 
     th:last-child,
     td:last-child {
-        position: sticky;
-        right: 0;
-        z-index: 2;
+        white-space: nowrap;
     }
 }
 

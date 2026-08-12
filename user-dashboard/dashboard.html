@@ -8,22 +8,22 @@
 </head>
 <body>
 <nav class="navbar">
-      <div class="nav-left">
-        <img src="images/logo.jpg" alt="CUU Logo" style="height:40px;width:40px;border-radius:50%;">
-        <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
-          <span></span><span></span><span></span>
-        </button>
-        <div class="nav-links" id="nav-links">
-          <a href="./dashboard.html">Dashboard</a>
-           <a href="user recent activity.html">Recent Activity</a>
-          <a href="report.html">Report Item</a>
-          <a href="items.html">Browse Items</a>
-          <a href="my-report.html">My Reports</a>
-          <a href="./profile.html">Profile</a>
-          <button id="logoutBtn" type="button">Log Out</button>
-        </div>
-      </div>
-    </nav>
+  <div class="nav-left">
+    <div class="nav-brand" style="display:flex;align-items:center;gap:10px;">
+      <img src="images/logo.jpg" alt="CUU Logo" style="height:40px;width:40px;border-radius:50%;">
+      <span style="color:white;font-weight:700;font-size:0.9rem;">CUU LOST &amp; FOUND SYSTEM</span>
+    </div>
+    <div class="nav-links" id="nav-links">
+      <a href="./dashboard.html" class="nav-btn active">Dashboard</a>
+      <a href="user recent activity.html" class="nav-btn">Recent Activity</a>
+      <a href="report.html" class="nav-btn">Report Item</a>
+      <a href="items.html" class="nav-btn">Browse Items</a>
+      <a href="my-report.html" class="nav-btn">My Reports</a>
+      <a href="./profile.html" class="nav-btn">Profile</a>
+      <button id="logoutBtn" class="nav-btn logout-btn" type="button">Log Out</button>
+    </div>
+  </div>
+</nav>
           
   </header>
 
@@ -42,10 +42,5 @@
         <script src="../admin-dashboard/supabase.js"></script>
 
   <script src="css/js/script.js"></script>
-  <script>
-    const hb = document.getElementById('hamburger');
-    const nl = document.getElementById('nav-links');
-    if (hb && nl) hb.addEventListener('click', () => nl.classList.toggle('open'));
-  </script>
 </body>
 </html>
