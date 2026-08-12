@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users</title>
+    <link rel="stylesheet" href="./manage-users.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+<div class="container">
+
+    <h1>Manage Users</h1>
+
+    <div class="top-section">
+
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search users...">
+        </div>
+
+      <a href="./add-user.html">
+        <button class="add-user">
+            <i class="fas fa-user-plus"></i>
+            Add User
+        </button>
+        </a>
+    </div>
+
+    <div class="summary">
+
+        <div class="card">
+            <h2 id="totalUsers">0</h2>
+            <p>Total Users</p>
+        </div>
+
+        <div class="card">
+            <h2 id="activeUsers">0</h2>
+            <p>Active</p>
+        </div>
+
+        <div class="card">
+            <h2 id="adminUsers">0</h2>
+            <p>Admins</p>
+        </div>
+
+    </div>
+
+    <div class="table-wrapper">
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Student ID</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+
+        </thead>
+
+        <tbody id="usersTableBody">
+
+        </tbody>
+
+    </table>
+    </div>
+
+</div>
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="./supabase.js"></script>
+<script src="manage-users.js"></script>
+</body>
+</html>

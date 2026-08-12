@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify Claims - Campus Lost & Found</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./verify claims.css">
+  <style>
+    .top-bar-nav {
+      background: #0f172a;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #1e293b;
+    }
+    .top-bar-nav a {
+      color: #38bdf8;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .top-bar-nav a:hover {
+      text-decoration: underline;
+    }
+    .status.approved { background: #dcfce7; color: #166534; }
+    .status.rejected { background: #fee2e2; color: #991b1b; }
+    .status.pending { background: #fef3c7; color: #92400e; }
+  </style>
+</head>
+<body>
+  <nav class="top-bar-nav">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <img src="../login-page/images/logo.jpg" alt="CUU Logo" style="height:35px; width:35px; border-radius:50%;">
+      <span style="color:white; font-weight:700;">CUU Lost & Found — Officer Verification</span>
+    </div>
+    <div>
+      <a href="../officer-dashboard/lost and found officer.html">← Back to Officer Dashboard</a>
+    </div>
+  </nav>
+
+  <div class="container" style="max-width:900px; margin:30px auto; padding:0 20px;">
+    <header class="page-header" style="margin-bottom:24px;">
+      <h1 style="color:white; margin:0 0 6px 0;">Verify Claims</h1>
+      <p style="color:white; margin:0;">Review, verify, and approve item ownership claims submitted by students and users.</p>
+    </header>
+
+    <section class="claims-section">
+      <div class="section-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; border-bottom:2px solid #e2e8f0; padding-bottom:10px;">
+        <h2 style="margin:0; font-size:1.25rem; color:white;">Submitted Claims</h2>
+        <span id="claims-count" style="background:#e2e8f0; color:#334155; padding:4px 12px; border-radius:12px; font-weight:bold; font-size:0.85rem;">0 Claims</span>
+      </div>
+
+      <div id="claims-container" style="display:flex; flex-direction:column; gap:16px;">
+        <p style="color:white;">Loading claim verification requests…</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Supabase client initialization -->
+  <script src="../admin-dashboard/supabase.js"></script>
+  <!-- Verify Claims Script -->
+  <script src="verify-claims.js"></script>
+</body>
+</html>

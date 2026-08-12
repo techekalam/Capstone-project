@@ -1,0 +1,416 @@
+:root {
+    --primary-purple: #415180; 
+    --accent-gold: #808291; 
+    --text-dark: #333333;
+    --light-bg: #f4f6f9;
+    --white: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    
+}
+
+body {
+    background-color: var(--light-bg);
+    color: var(--text-dark);
+    background-image: url(Image.png.png);
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: 60% auto;
+    background-attachment: local;
+}
+
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    background-color: var(--white);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.navbar .logo a {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #415180;
+    text-decoration: none;
+}
+
+.navbar .logo span {
+    color: #6a6868;
+}
+.navbar .logo h1{
+    color:black;
+    font-size: 1.5rem;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    align-items: center;
+}
+
+.nav-links li {
+    margin-left: 25px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--primary-purple);
+}
+
+.nav-links .btn-login {
+    background-color: var(--primary-purple);
+    color: var(--white);
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.nav-links .btn-login:hover {
+    background-color: #2c42ae;
+    color: var(--white);
+}
+
+
+.hero {
+    background: linear-gradient(rgba(10, 25, 47, 0.85), rgba(10, 25, 47, 0.85)), url('https://cavendish.ac.uk') no-repeat center center/cover;
+    padding: 100px 5%;
+    text-align: center;
+    color: var(--white);
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.hero p {
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.search-container {
+    background-color: var(--white);
+    padding: 15px;
+    border-radius: 8px;
+    max-width: 800px;
+    margin: 0 auto;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.search-form {
+    display: flex;
+    gap: 10px;
+}
+
+.search-input, .search-category, .btn-search {
+    padding: 15px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-input {
+    flex: 2;
+}
+
+.search-category {
+    flex: 1;
+    background-color: var(--light-bg);
+}
+
+.btn-search {
+    background-color: var(--accent-gold);
+    color: var(--white);
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    flex: 0.5;
+    transition:  0.3s ease;
+}
+
+.btn-search:hover {
+    background-color: #2c42ae;
+}
+
+
+.recent-listings {
+    padding: 50px 5%;
+}
+
+.recent-listings h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: rgb(0, 0, 0);
+    font-size: 2rem;
+}
+
+.listings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    justify-content: center;
+}
+
+
+.item-card {
+    background-color: var(--white);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+}
+
+.item-card:hover {
+    transform: translateY(-5px);
+}
+
+.item-img {
+    height: 200px;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+}
+
+.item-details {
+    padding: 20px;
+}
+
+.item-details h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: var(--primary-purple);
+}
+
+.item-details p {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.btn-claim {
+
+    display: block;
+    width: calc(100% - 20px);
+    margin: 15px auto 0;
+    padding: 10px 0;
+    text-align: center;
+    background-color: var(--accent-gold);
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    box-sizing: border-box;
+
+}
+
+.btn-claim:hover {
+    background-color: #2d5dce;
+}
+.foot {
+    background-color: rgba(10, 25, 47, 0.85);
+    padding: 30px 5%;
+    text-align: center;
+}
+
+.foot footer {
+    color: white;
+    font-size: 14px;
+}
+
+
+/* ─── Hamburger Menu Button ─── */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    gap: 5px;
+}
+
+.hamburger span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: var(--text-dark);
+    border-radius: 3px;
+    transition: 0.3s ease;
+}
+
+/* ─── Tablet (max-width: 768px) ─── */
+@media (max-width: 768px) {
+    .navbar .logo h1 {
+        font-size: 1.2rem;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 80px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background-color: var(--white);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px 5%;
+        z-index: 100;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links li {
+        margin: 10px 0;
+        margin-left: 0;
+    }
+
+    .nav-links .btn-login {
+        text-align: center;
+    }
+
+    .hero {
+        padding: 60px 5%;
+    }
+
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    .search-form {
+        flex-direction: column;
+    }
+
+    .search-input, .search-category, .btn-search {
+        width: 100%;
+        flex: none;
+    }
+
+    .recent-listings h2 {
+        font-size: 1.6rem;
+    }
+
+    .listings-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 20px;
+    }
+
+    body {
+        background-size: 80% auto;
+    }
+}
+
+/* ─── Mobile (max-width: 480px) ─── */
+@media (max-width: 480px) {
+    .navbar {
+        padding: 15px 4%;
+    }
+
+    .navbar .logo h1 {
+        font-size: 1rem;
+    }
+
+    .navbar .logo img {
+        height: 35px !important;
+    }
+
+    .hero {
+        padding: 40px 4%;
+    }
+
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero p {
+        font-size: 0.9rem;
+        margin-bottom: 25px;
+    }
+
+    .search-container {
+        padding: 10px;
+    }
+
+    .search-input, .search-category, .btn-search {
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+
+    .recent-listings {
+        padding: 30px 4%;
+    }
+
+    .recent-listings h2 {
+        font-size: 1.3rem;
+    }
+
+    .listings-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .item-card {
+        max-width: 100%;
+    }
+
+    .item-details h3 {
+        font-size: 1.1rem;
+    }
+
+    .item-details p {
+        font-size: 0.85rem;
+    }
+
+    body {
+        background-size: 100% auto;
+        background-position: top center;
+    }
+
+    .foot footer {
+        font-size: 12px;
+    }
+}
+
+/* ─── Large screens (min-width: 1200px) ─── */
+@media (min-width: 1200px) {
+    .listings-grid {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    .hero h1 {
+        font-size: 3.5rem;
+    }
+}

@@ -1,0 +1,321 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Lost & Found - admin-dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="app-container">
+        <nav class="top-nav">
+            <div style="display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 16px;margin-bottom:8px;">
+                <img src="../login-page/images/logo.jpg"  alt="CUU Logo" style="height:40px;width:40px;border-radius:50%;">
+                <span style="color:white;font-weight:700;font-size:0.85rem;">CUU LOST & FOUND SYSTEM</span>
+            </div>
+            <ul class="nav-links">
+                <li><a class="nav-btn active" href="admin-dashboard.html">Dashboard</a></li>
+                <li><a class="nav-btn" href="manage-reports.html">Manage Reports</a></li>
+                <li><a class="nav-btn" href="manage-items.html">Manage Items</a></li>
+                <li><a class="nav-btn" href="manage-users.html">Manage Users</a></li>
+                <li><a class="nav-btn" href="Recent Activity.html">Recent Activity</a></li>
+                <li><a class="nav-btn" href="add-user.html">Add User</a></li>
+                <li><a class="nav-btn" href="../user-dashboard/profile.html">Profile</a></li>
+                <li><button class="nav-btn logout-btn" id="logout-sidebar-btn">Logout</button></li>
+            </ul>
+            <div class="nav-right">
+                <div class="admin-search">
+                    <input type="text" id="global-search" placeholder="Search report/item...">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                </div>
+                <div class="profile-summary" style="cursor:pointer;" onclick="window.location.href='../user-dashboard/profile.html'">
+                    <span class="profile-name-mini" id="mini-admin-name">Admin User</span>
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&auto=format&fit=crop&q=80" alt="Admin Avatar" class="mini-avatar" id="mini-admin-avatar">
+                </div>
+            </div>
+        </nav>
+
+        <div class="main-content">
+            <header class="main-header">
+                <div class="header-left">
+                    <h1 id="current-section-title">Dashboard Overview</h1>
+                </div>
+
+            </header>
+            <main class="content-body">
+                
+                <section id="dashboard-view" class="dashboard-section">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            
+                            <div class="stat-info">
+                                <h3 id="stat-total-reports">0</h3>
+                                <p>Total Reports</p>
+                            </div>
+
+                        </div>
+
+                        <div class="stat-card">
+                           
+                            <div class="stat-info">
+                                <h3 id="stat-lost-items">0</h3>
+                                <p>Lost Items</p>
+                            </div>
+
+                        </div>
+
+                        <div class="stat-card">
+                           
+                            <div class="stat-info">
+                                <h3 id="stat-found-items">0</h3>
+                                <p>Found Items</p>
+                            </div>
+
+                        </div>
+
+                        <div class="stat-card">
+                           
+                            <div class="stat-info">
+                                <h3 id="stat-pending-reports">0</h3>
+                                <p>Pending Reports</p>
+                            </div>
+
+                        </div>
+
+                        <div class="stat-card">
+                           
+                            <div class="stat-info">
+                                <h3 id="stat-resolved-cases">0</h3>
+                                <p>Resolved Cases</p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </section>
+
+                <section id="reports-view" class="dashboard-section hidden">
+                    <div class="section-actions-bar">
+                        <div class="filter-group">
+                            <label for="report-filter-status">Filter by Status:</label>
+                            <select id="report-filter-status">
+                                <option value="all">All Statuses</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Claimed">Claimed</option>
+                                <option value="Closed">Closed</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <div class="scrollable-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Item Name</th>
+                                        <th>Category</th>
+                                        <th>Location</th>
+                                        <th>Date</th>
+                                        <th>Submitted By</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reports-table-body">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+                <section id="items-view" class="dashboard-section hidden">
+                    <div class="section-actions-bar">
+                        <div class="filter-group">
+                            <label for="item-filter-type">Filter by Type:</label>
+                            <select id="item-filter-type">
+                                <option value="all">All Types</option>
+                                <option value="Lost">Lost</option>
+                                <option value="Found">Found</option>
+                            </select>
+                        </div>
+                        <button class="primary-btn" id="add-item-trigger-btn">
+                            
+                            <span>Add Found Item</span>
+                        </button>
+                    </div>
+                    
+                    <div class="items-display-panel">
+                        <div class="items-grid" id="items-grid-container">
+                           
+                        </div>
+                    </div>
+                </section>
+
+                <section id="users-view" class="dashboard-section hidden">
+                    <div class="table-container">
+                        <div class="scrollable-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Registration Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="users-table-body">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="claims-view" class="dashboard-section hidden">
+                    <div class="table-container">
+                        <div class="scrollable-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Claimant Name</th>
+                                        <th>Item Claimed</th>
+                                        <th>Claim Details / Description</th>
+                                        <th>Date Submitted</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="claims-table-body">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="activity-view" class="dashboard-section hidden">
+                    <div class="table-container">
+                        <div class="table-header-bar">
+                            <h2>Recent System Activity</h2>
+                        </div>
+                        <div class="scrollable-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Activity</th>
+                                        <th>Detail</th>
+                                        <th>Date &amp; Time</th>
+                                        <th>User</th>
+                                        <th>Status</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recent-reports-table-body">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+<section id="profile-view" class="dashboard-section hidden">
+                    <div class="profile-card">
+                        <div class="profile-card-header">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&auto=format&fit=crop&q=80" alt="Admin Avatar" class="profile-large-avatar" id="profile-admin-avatar">
+                            <h2 id="profile-admin-name">Admin User</h2>
+                            <span class="profile-role-badge" id="profile-admin-role">Admin</span>
+                            <p style="color: var(--text-muted); margin-top: 8px;" id="profile-admin-email">admin@cavendish.ac.ug</p>
+                        </div>
+
+                        <div class="profile-card-actions">
+                            <button class="secondary-btn" id="change-pwd-btn">Change Password</button>
+                            <button class="danger-btn" id="logout-profile-btn">Log Out Account</button>
+                        </div>
+                    </div>
+
+            </main>
+        </div>
+
+
+    <div id="item-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2 id="modal-title">Item Details</h2>
+                <button class="close-modal-btn" id="close-item-modal-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="item-form">
+                    <input type="hidden" id="item-form-id">
+                    
+                    <div class="form-group">
+                        <label for="item-form-name">Item Name</label>
+                        <input type="text" id="item-form-name" required placeholder="e.g. Leather Wallet">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="item-form-category">Category</label>
+                            <select id="item-form-category">
+                                <option value="Electronics">Electronics</option>
+                                <option value="Documents">Documents</option>
+                                <option value="Accessories">Accessories</option>
+                                <option value="Books & Stationery">Books & Stationery</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="item-form-type">Type</label>
+                            <select id="item-form-type">
+                                <option value="Lost">Lost</option>
+                                <option value="Found">Found</option>
+                            </select>
+                        </div>
+
+                    <div class="form-group">
+                        <label for="item-form-location">Reported Location</label>
+                        <input type="text" id="item-form-location" required placeholder="e.g. Library Desk">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="item-form-image">Image URL</label>
+                        <input type="text" id="item-form-image" placeholder="Image URL (Unsplash or direct link)">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="item-form-status">Status</label>
+                        <select id="item-form-status">
+                            <option value="Unclaimed">Unclaimed</option>
+                            <option value="Claimed">Claimed</option>
+                            <option value="Returned">Returned</option>
+                        </select>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="secondary-btn" id="cancel-item-modal-btn">Cancel</button>
+                        <button type="submit" class="primary-btn" id="save-item-modal-btn">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+    </div>
+
+    <div id="user-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2>User Profile Details</h2>
+                <button class="close-modal-btn" id="close-user-modal-btn">&times;</button>
+            </div>
+            <div class="modal-body" id="user-modal-details">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="secondary-btn" id="close-user-modal-footer-btn">Close</button>
+            </div>
+    </div>
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="./supabase.js"></script>
+    <script src="./admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav class="navbar">
+      <div class="nav-left">
+        <img src="images/logo.jpg" alt="CUU Logo" style="height:40px;width:40px;border-radius:50%;">
+        <div class="nav-links">
+          <a href="./dashboard.html">Dashboard</a>
+           <a href="user recent activity.html">Recent Activity</a>
+          <a href="report.html">Report Item</a>
+          <a href="items.html">Browse Items</a>
+          <a href="my-report.html">My Reports</a>
+          <a href="./profile.html">Profile</a>
+        </div>
+          
+<button id="logoutBtn" type="button">Log Out</button>
+        </div>
+ 
+    </nav>
+          
+  </header>
+
+  <div class="dashboard-container">
+    <h2 style="color:white;">Welcome, <span id="userName" style="color:white;">User</span></h2>
+
+    <div class="quick-actions">
+      <a href="report.html?type=lost"><button>+ Report Lost Item</button></a>
+      <a href="report.html?type=found"><button class="secondary">+ Report Found Item</button></a>
+    </div>
+
+    <h3 style="color:white;">My Reports</h3>
+    <div id="reportsList" class="reports-list">
+    </div>
+     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="../admin-dashboard/supabase.js"></script>
+
+  <script src="css/js/script.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recent Activity - CUU Lost & Found</title>
+    <link rel="stylesheet" href="./css/user.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-left">
+        <img src="images/logo.jpg" alt="CUU Logo" style="height:40px;width:40px;border-radius:50%;">
+        <div class="nav-links">
+            <a href="./dashboard.html">Dashboard</a>
+            <a href="user recent activity.html">Recent Activity</a>
+            <a href="report.html">Report Item</a>
+            <a href="items.html">Browse Items</a>
+            <a href="my-report.html">My Reports</a>
+            <a href="../homepage/index.html">Home</a>
+            <a href="./profile.html">Profile</a>
+            <button id="logoutBtn" type="button">Log Out</button>
+        </div>
+    </div>
+</nav>
+
+<div class="dashboard-container">
+    <section class="audit-log">
+        <div class="audit-header">
+            <h2>Recent Activity</h2>
+            <button id="clearLogsBtn">Clear</button>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date & Time</th>
+                        <th>Activity</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody id="auditTableBody">
+                    
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="../admin-dashboard/supabase.js"></script>
+
+<script src="./css/js/script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,289 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Lost & Found - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../admin-dashboard/admin.css">
+</head>
+<body>
+    <div class="app-container">
+        <nav class="top-nav">
+            <div style="display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 16px;margin-bottom:8px;">
+                <img src="../login-page/images/logo.jpg" alt="CUU Logo" style="height:40px;width:40px;border-radius:50%;">
+                <span style="color:white;font-weight:700;font-size:0.85rem;">Lost and Found System</span>
+            </div>
+            <ul class="nav-links">
+                <li><button class="nav-btn active">Dashboard</button></li>
+                <a href="../admin-dashboard/Recent Activity.html" style="text-decoration:none"><li><button class="nav-btn">Recent Activity</button></li></a>
+                <a href="../admin-dashboard/verify claims.html" style="text-decoration:none;"><li><button class="nav-btn">Claims Verification</button></li></a>
+                <a href="../user-dashboard/profile.html" style="text-decoration:none;"><li><button class="nav-btn">Profile</button></li></a>
+                <li><button class="nav-btn logout-btn" id="logout-btn">Logout</button></li>
+            </ul>
+            <div class="nav-right">
+                <div class="admin-search">
+                    <input type="text" id="global-search" placeholder="Search report/item...">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                </div>
+        </nav>
+
+        <div class="main-content">
+            <header class="main-header">
+                <div class="header-left">
+                    <h1 id="current-section-title">Dashboard Overview</h1>
+                </div>
+            </header>
+
+            <main class="content-body">
+
+                <section id="dashboard-view" class="dashboard-section">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3 id="stat-my-reports">0</h3>
+                                <p>My Reports</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3 id="stat-lost-items">0</h3>
+                                <p>Lost Items</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3 id="stat-found-items">0</h3>
+                                <p>Found Items</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3 id="stat-pending-reports">0</h3>
+                                <p>Pending Reports</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3 id="stat-resolved-cases">0</h3>
+                                <p>Resolved Cases</p>
+                            </div>
+                        </div>
+                    </div>
+
+                  
+                </section>
+
+                <section id="activities-view" class="dashboard-section hidden">
+                    <div class="section-actions-bar">
+                        <div class="filter-group">
+                            <label for="activity-filter-status">Filter by Status:</label>
+                            <select id="activity-filter-status">
+                                <option value="all">All Statuses</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Claimed">Claimed</option>
+                                <option value="Closed">Closed</option>
+                            </select>
+                        </div>
+                    <div class="table-container">
+                        <div class="scrollable-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Item Name</th>
+                                        <th>Category</th>
+                                        <th>Location</th>
+                                        <th>Date</th>
+                                        <th>Activity</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="activities-table-body">
+                                </tbody>
+                            </table>
+                        </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../admin-dashboard/supabase.js"></script>
+    <script>
+        const sections = document.querySelectorAll('.dashboard-section');
+        const sectionTitle = document.getElementById('current-section-title');
+        
+        let officerUserId = null;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            window.addEventListener('pageshow', function (e) {
+                if (e.persisted) {
+                    window.location.reload();
+                }
+            });
+
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    try {
+                        if (window.supabaseClient) {
+                            await window.supabaseClient.auth.signOut();
+                        }
+                    } catch (err) {
+                        console.error('Logout error:', err);
+                    }
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    window.location.replace("../login-page/login.html");
+                });
+            }
+
+            if (!window.supabaseClient) return;
+
+            window.supabaseClient.auth.onAuthStateChange(async (event, session) => {
+                if (event === 'SIGNED_OUT' || !session) {
+                    window.location.replace("../login-page/login.html");
+                    return;
+                }
+                if (event !== 'INITIAL_SESSION' && event !== 'SIGNED_IN') return;
+
+                const user = session.user;
+                const emailLower = (user.email || '').toLowerCase();
+
+                let { data: profile } = await window.supabaseClient
+                    .from('Profiles')
+                    .select('role')
+                    .eq('id', user.id)
+                    .maybeSingle();
+
+                let userRole = profile && profile.role ? profile.role.toLowerCase() : '';
+
+                if (userRole !== 'officer' && emailLower.includes('officer')) {
+                    userRole = 'officer';
+                    window.supabaseClient.from('Profiles').upsert({
+                        id: user.id,
+                        full_name: (user.user_metadata && user.user_metadata.full_name) || user.email,
+                        email: user.email,
+                        role: 'officer'
+                    }).then(() => {}).catch(err => console.warn('Role auto-upgrade warning:', err));
+                }
+
+                if (userRole !== 'officer') {
+                    console.warn("User is not an officer. Role:", userRole, "Email:", user.email);
+                    window.location.replace("../login-page/login.html");
+                    return;
+                }
+
+                officerUserId = user.id;
+
+                // Load reports and items to populate the officer stat cards
+                await loadOfficerStats(officerUserId);
+
+                // Subscribe to live changes so the stats always stay up to date
+                subscribeToChanges();
+            });
+        });
+
+        // Keep the officer dashboard stats in sync with the database in real time
+        function subscribeToChanges() {
+            const supabase = window.supabaseClient;
+            if (!supabase) return;
+
+            try {
+                supabase
+                    .channel('officer-dashboard-changes')
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'Reports' }, () => {
+                        loadOfficerStats(officerUserId);
+                    })
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'Items' }, () => {
+                        loadOfficerStats(officerUserId);
+                    })
+                    .subscribe();
+            } catch (err) {
+                console.error('Realtime subscription failed:', err);
+            }
+
+            // Fallback: also refresh every 15 seconds in case realtime isn't enabled
+            setInterval(() => {
+                if (officerUserId) loadOfficerStats(officerUserId);
+            }, 15000);
+        }
+
+        // Populate the officer dashboard stat cards from the Reports and Items tables
+        async function loadOfficerStats(userId) {
+            const supabase = window.supabaseClient;
+            if (!supabase) return;
+
+            try {
+                // My reports (reports submitted by this officer)
+                const { data: myReports, error: myReportError } = await supabase
+                    .from('Reports')
+                    .select('*')
+                    .eq('user_id', userId);
+
+                // All reports (for pending / resolved counts)
+                const { data: allReports, error: allReportError } = await supabase
+                    .from('Reports')
+                    .select('*');
+
+                // All items (for lost / found counts)
+                const { data: items, error: itemsError } = await supabase
+                    .from('Items')
+                    .select('*');
+
+                if (myReportError) console.error('Failed to load my reports:', myReportError);
+                if (allReportError) console.error('Failed to load all reports:', allReportError);
+                if (itemsError) console.error('Failed to load items:', itemsError);
+
+                const reportsList = allReports || [];
+                const itemsList = items || [];
+
+                const myReportsCount = (myReports || []).length;
+
+                // Lost Items count (across Items and Reports)
+                const lostFromItems = itemsList.filter(i => (i.type || '').toLowerCase().includes('lost')).length;
+                const lostFromReports = reportsList.filter(r => (r.item_type || r.category || '').toLowerCase().includes('lost')).length;
+                const lostItemsCount = lostFromItems + lostFromReports;
+
+                // Found Items count (across Items and Reports)
+                const foundFromItems = itemsList.filter(i => (i.type || '').toLowerCase().includes('found')).length;
+                const foundFromReports = reportsList.filter(r => (r.item_type || r.category || '').toLowerCase().includes('found')).length;
+                const foundItemsCount = foundFromItems + foundFromReports;
+
+                // Pending Reports count
+                const pendingReportsCount = reportsList.filter(r => {
+                    const s = (r.status || '').toLowerCase();
+                    return s === 'pending' || s === 'unclaimed' || s === '';
+                }).length;
+
+                // Resolved Cases count (Closed, Claimed, Approved, Returned)
+                const resolvedCount = reportsList.filter(r => {
+                    const s = (r.status || '').toLowerCase();
+                    return s === 'closed' || s === 'claimed' || s === 'approved' || s === 'returned';
+                }).length;
+
+                const setStat = (id, value) => {
+                    const el = document.getElementById(id);
+                    if (el) el.textContent = value;
+                };
+
+                setStat('stat-my-reports', myReportsCount);
+                setStat('stat-lost-items', lostItemsCount);
+                setStat('stat-found-items', foundItemsCount);
+                setStat('stat-pending-reports', pendingReportsCount);
+                setStat('stat-resolved-cases', resolvedCount);
+            } catch (err) {
+                console.error('Error loading officer stats:', err);
+            }
+        }
+    </script>
+</body>
+</html>

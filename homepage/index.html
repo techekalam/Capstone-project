@@ -1,0 +1,245 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CUU Lost & Found System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="logo" style="display:flex;align-items:center;gap:12px;">
+            <img src="../login-page/images/logo.jpg" alt="CUU Logo" style="height:45px;width:auto;border-radius:50%;">
+            <h1 style="margin:0;">CUU LOST & FOUND SYSTEM</h1>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="../login-page/login.html" class="btn-login">Student Login</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Search Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Find Your Belongings</h1>
+            <p>Search our campus database for items or report an item.</p>
+            
+            <div class="search-container">
+                <form id="homepageSearchForm" class="search-form" onsubmit="return false;">
+                    <input type="text" id="searchInput" placeholder="Search item (e.g., Student ID, Laptop, Bag)..." class="search-input">
+                    <select id="categorySelect" class="search-category">
+                        <option value="all">All Categories</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="documents">Documents</option>
+                        <option value="accessories">Accessories</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <button type="submit" id="searchBtn" class="btn-search">Search</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recently Found Items Section -->
+    <section class="recent-listings">
+        <h2>Recently Found Items on Campus</h2>
+        <div class="listings-grid" id="listingsGrid">
+            <p style="text-align: center; grid-column: 1 / -1; font-style: italic; color: #64748b;">Loading recently found items...</p>
+        </div>
+    </section> 
+
+    <!-- Footer -->
+    <div class="foot">
+        <footer>
+            © 2026 Cavendish University Uganda. All Rights Reserved.
+        </footer>
+    </div>
+
+    <!-- Supabase Client Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../admin-dashboard/supabase.js"></script>
+
+    <script>
+        // Hamburger Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        if (hamburger && navLinks) {
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+        }
+
+        // Store loaded items
+        let recentItemsStore = [];
+
+        async function loadHomepageItems() {
+            const grid = document.getElementById('listingsGrid');
+            if (!grid) return;
+
+            const sb = window.supabaseClient;
+            if (!sb) {
+                grid.innerHTML = '<p style="text-align: center; grid-column: 1 / -1; color: #ef4444;">Unable to connect to database.</p>';
+                return;
+            }
+
+            try {
+                // Fetch from both Items and Reports tables
+                const [itemsRes, reportsRes] = await Promise.all([
+                    sb.from('Items').select('*').order('created_at', { ascending: false }),
+                    sb.from('Reports').select('*').order('created_at', { ascending: false })
+                ]);
+
+                const rawItems = itemsRes.data || [];
+                const rawReports = reportsRes.data || [];
+
+                const combined = [];
+
+                // 1) Process Items table
+                rawItems.forEach(item => {
+                    combined.push({
+                        id: item.id,
+                        name: item.item_name || 'Campus Item',
+                        category: item.category || 'Other',
+                        type: item.type || 'Found Item',
+                        location: item.location || 'Campus Grounds',
+                        description: item.description || '',
+                        date: item.created_at || item.date || null,
+                        image: item.image_url || '../login-page/images/logo.jpg',
+                        source: 'Items'
+                    });
+                });
+
+                // 2) Process Reports table
+                rawReports.forEach(report => {
+                    const title = report.item_name || report.category || 'Reported Item';
+                    combined.push({
+                        id: report.id,
+                        name: title,
+                        category: report.category || 'Report',
+                        type: report.item_type || 'Found Item',
+                        location: report.location || 'Campus Grounds',
+                        description: report.description || '',
+                        date: report.created_at || report.date || null,
+                        image: report.image_url || '../login-page/images/logo.jpg',
+                        source: 'Reports'
+                    });
+                });
+
+                // Sort newest first
+                combined.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+                recentItemsStore = combined;
+
+                renderHomepageGrid();
+            } catch (err) {
+                console.error('Failed to load homepage items:', err);
+                grid.innerHTML = `<p style="text-align: center; grid-column: 1 / -1; color: #ef4444;">Error loading items: ${err.message}</p>`;
+            }
+        }
+
+        function renderHomepageGrid() {
+            const grid = document.getElementById('listingsGrid');
+            if (!grid) return;
+
+            const searchVal = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+            const categoryVal = (document.getElementById('categorySelect')?.value || 'all').toLowerCase();
+
+            const filtered = recentItemsStore.filter(item => {
+                const itemCat = (item.category || '').toLowerCase();
+                const itemName = (item.name || '').toLowerCase();
+                const itemDesc = (item.description || '').toLowerCase();
+                const itemType = (item.type || '').toLowerCase();
+                const itemLoc = (item.location || '').toLowerCase();
+
+                // Category Filter
+                if (categoryVal !== 'all') {
+                    // Match singular/plural roots (e.g. document/documents, electronic/electronics)
+                    const rootCat = categoryVal.replace(/(es|s)$/, '');
+                    const catMatch = itemCat.includes(categoryVal) || 
+                                     itemCat.includes(rootCat) || 
+                                     itemName.includes(rootCat) || 
+                                     itemDesc.includes(rootCat);
+                    if (!catMatch) return false;
+                }
+
+                // Search Query Filter
+                if (searchVal) {
+                    const queryMatch = itemName.includes(searchVal) || 
+                                       itemCat.includes(searchVal) || 
+                                       itemLoc.includes(searchVal) || 
+                                       itemDesc.includes(searchVal) ||
+                                       itemType.includes(searchVal);
+                    if (!queryMatch) return false;
+                }
+
+                return true;
+            });
+
+            grid.innerHTML = '';
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<p style="text-align: center; grid-column: 1 / -1; font-style: italic; color: #64748b; padding: 30px;">No recently found items match your query.</p>';
+                return;
+            }
+
+            filtered.slice(0, 16).forEach(item => {
+                const dateStr = formatDate(item.date);
+                const card = document.createElement('div');
+                card.className = 'item-card';
+
+                const imgHtml = item.image && item.image !== '../login-page/images/logo.jpg'
+                    ? `<img src="${item.image}" alt="${escapeHTML(item.name)}" style="width: 100%; height: 180px; object-fit: cover;">`
+                    : `<div class="item-img"><img src="../login-page/images/logo.jpg" alt="Logo" style="height:70px; width:auto; opacity:0.8;"></div>`;
+
+                card.innerHTML = `
+                    ${imgHtml}
+                    <div class="item-details">
+                        <h3>${escapeHTML(item.name)}</h3>
+                        <p class="location"><strong>Found at:</strong> ${escapeHTML(item.location)}</p>
+                        <p class="date"><strong>Date Found:</strong> ${dateStr}</p>
+                        <a href="../login-page/login.html" class="btn-claim">Claim Item</a>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        function formatDate(dateVal) {
+            if (!dateVal) return 'Recent';
+            const d = new Date(dateVal);
+            if (isNaN(d.getTime())) return String(dateVal);
+            return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+        }
+
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        // Live Search Listeners with Auto-Scroll to Results
+        const handleSearch = () => {
+            renderHomepageGrid();
+            const resultsSection = document.querySelector('.recent-listings');
+            if (resultsSection) {
+                resultsSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        };
+
+        document.getElementById('searchInput')?.addEventListener('input', renderHomepageGrid);
+        document.getElementById('categorySelect')?.addEventListener('change', handleSearch);
+        document.getElementById('homepageSearchForm')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            handleSearch();
+        });
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', loadHomepageItems);
+    </script>
+</body>
+</html>

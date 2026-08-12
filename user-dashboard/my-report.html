@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Reports</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="user recent activity.html">Recent Activity</a>
+      <a href="report.html">Report Item</a>
+      <a href="items.html">Browse Items</a>
+      <a href="my-report.html">My Reports</a>
+      <a href="../homepage/index.html">Home</a>
+      <a href="./profile.html">Profile</a>
+       <button id="logoutBtn" type="button">Log Out</button>
+    </div>
+ 
+  </nav>
+
+  <div class="dashboard-container">
+    <h2 style="color:white;">My Reports</h2>
+    <div id="noReports" style="color:white; text-align:center; margin-top:20px;">You haven't submitted any reports yet.</div>
+    <div id="reportsList" class="reports-list">
+    </div>
+  </div>
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="../admin-dashboard/supabase.js"></script>
+
+ 
+  <script src="css/js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY PROFILE</title>
+    <link rel="stylesheet" href="profile.css">
+</head>
+<body>
+    <div class="profile">
+        <img id="profileAvatar" src="../login-page/images/logo.jpg" alt="Profile Picture">
+        <h2>My Profile</h2>
+        <div class="info">
+            <p><span>Full Name: <b id="profileName">Loading...</b></span></p>
+
+            <p><span>Email: <b id="profileEmail">Loading...</b></span></p>
+            <p><span>Contact: <b id="profilePhone">N/A</b></span></p>
+           <p><span>Role: <b id="profileRole">student</b></span></p>            
+        </div>
+        <div class="buttons">
+        <a href="edit.html"><button class="edit">Edit Profile</button></a>
+         <a href="./change password.html"><button class="password">Change Password</button></a>
+         <button class="logout" id="logoutBtn">Logout</button>
+        </div>
+         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="../admin-dashboard/supabase.js"></script>
+    <script>
+        async function loadProfile() {
+            try {
+                // Guard: make sure the Supabase client actually loaded
+                const sb = window.supabaseClient;
+                if (!sb) {
+                    console.error('Supabase client is not initialized. CDN may have failed to load.');
+                    document.getElementById('profileName').textContent  = 'Connection error';
+                    document.getElementById('profileEmail').textContent = 'Could not reach database';
+                    return;
+                }
+
+                // Get fresh user directly from auth server to avoid stale local storage session
+                const { data: { user: freshUser } } = await sb.auth.getUser();
+                const { data: sessionData } = await sb.auth.getSession();
+                const session = sessionData?.session;
+
+                if (!session && !freshUser) {
+                    window.location.href = '../login-page/login.html';
+                    return;
+                }
+
+                const user = freshUser || session?.user;
+                const userId = user.id;
+
+                // Ensure a profile row exists (creates one if missing)
+                if (typeof ensureProfile === 'function') {
+                    await ensureProfile(user);
+                }
+
+                // Load profile from the "Profiles" table
+                const { data: profile, error } = await sb
+                    .from('Profiles')
+                    .select('*')
+                    .eq('id', userId)
+                    .maybeSingle();
+
+                if (error) {
+                    console.error('Profile load error:', error);
+                }
+
+                const nameEl = document.getElementById('profileName');
+                const studentIdEl = document.getElementById('profileStudentId');
+                const emailEl = document.getElementById('profileEmail');
+                const phoneEl = document.getElementById('profilePhone');
+                const roleEl = document.getElementById('profileRole');
+                const avatarEl = document.getElementById('profileAvatar');
+
+                const displayName = (profile && profile.full_name && profile.full_name.trim()) 
+                    ? profile.full_name 
+                    : (user.user_metadata?.full_name || user.email);
+
+                const displayPhone = (profile && profile.phone && profile.phone.trim()) 
+                    ? profile.phone 
+                    : (user.user_metadata?.phone || 'N/A');
+
+                const displayEmail = (profile && profile.email) || user.email;
+                const displayRole = (profile && profile.role) || 'student';
+
+                const displayAvatar = (profile && profile.avatar_url) || user.user_metadata?.avatar_url;
+
+                if (nameEl) nameEl.textContent = displayName;
+                if (studentIdEl) studentIdEl.textContent = (profile && profile.student_id) || 'N/A';
+                if (emailEl) emailEl.textContent = displayEmail;
+                if (phoneEl) phoneEl.textContent = displayPhone;
+                if (roleEl) roleEl.textContent = displayRole;
+                if (avatarEl && displayAvatar) {
+                    avatarEl.src = displayAvatar;
+                }
+            } catch (err) {
+                console.error('Unexpected error loading profile:', err);
+                const nameEl = document.getElementById('profileName');
+                const emailEl = document.getElementById('profileEmail');
+                if (nameEl) nameEl.textContent = 'Error loading profile';
+                if (emailEl) emailEl.textContent = 'Check console for details';
+            }
+        }
+
+        loadProfile();
+
+        window.addEventListener('pageshow', function () {
+            loadProfile();
+        });
+
+        // Logout button handler
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            const sb = window.supabaseClient;
+            if (sb) await sb.auth.signOut();
+            window.location.href = '../login-page/login.html';
+        });
+    </script>
+</body>
+</html>

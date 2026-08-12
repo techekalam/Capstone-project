@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Audit Logs</title>
+    <link rel="stylesheet" href="recent activity.css">
+</head>
+<body>
+    <main class="audit-page">
+        <div class="audit-header">
+            <div>
+                <h1 style="color:white;">Recent Activity</h1>
+                <p style="color:white;">Monitor activities taking place across the Campus Lost and Found System.</p>
+            </div>
+            <button id="clearLogsBtn" class="clear-btn">Clear Logs</button>
+        </div>
+
+        <div class="audit-controls">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search audit logs...">
+            </div>
+
+            <select id="roleFilter">
+                <option value="all">All Roles</option>
+                <option value="student">Student</option>
+                <option value="user">User</option>
+                <option value="admin">Administrator</option>
+                <option value="officer">Claims Officer</option>
+            </select>
+
+            <select id="statusFilter">
+                <option value="all">All Statuses</option>
+                <option value="success">Success</option>
+                <option value="completed">Completed</option>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+            </select>
+        </div>
+
+        <section class="audit-card">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date &amp; Time</th>
+                            <th>User ID</th>
+                            <th>Role</th>
+                            <th>Activity</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="auditTableBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="emptyMessage" class="empty-message">
+                No audit logs found.
+            </div>
+        </section>
+    </main>
+     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="./supabase.js"></script>
+
+    <script src="recent activity.js"></script>
+</body>
+</html>

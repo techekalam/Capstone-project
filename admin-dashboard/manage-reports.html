@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Lost & Found - Manage Reports</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./admin.css">
+</head>
+<body>
+
+    <div class="app-container">
+
+        <div class="nav-right">
+                <div class="admin-search">
+                    <input type="text" id="global-search" placeholder="Search report by item or user...">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                </div>
+                <div class="profile-summary">
+                    <span class="profile-name-mini">Admin User</span>
+                    <img src="user.jpeg" alt="Admin" width="50">
+                </div>
+            </div>
+
+        <div class="main-content">
+            <header class="main-header">
+                <div class="header-left">
+                    <h1>Manage Reports</h1>
+                </div>
+                <div class="header-meta" id="results-count">0 reports</div>
+            </header>
+
+            <main class="content-body">
+
+                <section id="reports-view" class="dashboard-section">
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3 id="stat-total">0</h3>
+                                <p>Total Reports</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3 id="stat-pending">0</h3>
+                                <p>Pending</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3 id="stat-approved">0</h3>
+                                <p>Approved</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3 id="stat-claimed">0</h3>
+                                <p>Claimed</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3 id="stat-closed">0</h3>
+                                <p>Closed</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-actions-bar">
+                        <div class="filter-group">
+                            <label for="report-filter-status" style="color:white;">Status</label>
+                            <select id="report-filter-status">
+                                <option value="all">All Statuses</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Claimed">Claimed</option>
+                                <option value="Closed">Closed</option>
+                            </select>
+
+                            <label for="report-filter-type" style="color:white;">Type</label>
+                            <select id="report-filter-type">
+                                <option value="all">All Types</option>
+                                <option value="Lost">Lost</option>
+                                <option value="Found">Found</option>
+                            </select>
+                        </div>
+                      </div>                      
+
+                    <div class="table-container">
+                        <div class="table-header-bar">
+                            <h2>All Reports</h2>
+                            <button class="text-link-btn" id="export-btn">Export CSV &rarr;</button>
+                        </div>
+                        <div class="scrollable-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Type</th>
+                                        <th>Category</th>
+                                        <th>Location</th>
+                                        <th>Date</th>
+                                        <th>Submitted By</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reports-table-body">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <div id="report-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2 id="report-modal-title">Report Details</h2>
+                <button class="close-modal-btn" id="close-report-modal-btn">&times;</button>
+            </div>
+            <div class="modal-body" id="report-modal-body">
+            </div>
+            <div class="modal-footer" id="report-modal-footer">
+            </div>
+        </div>
+    </div>
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="./supabase.js"></script>
+    <script src="reports.js"></script>
+</body>
+</html>

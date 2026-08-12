@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login-page</title>
+    <link rel="stylesheet" href="register.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" >
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <p style="text-align:center;color:white;"><strong>CUU LOST & FOUND SYSTEM</strong></p>
+        <div class="title" style="color:white;">LOGIN</div>
+        <form class="form" id="loginForm" autocomplete="on">
+            <div class="user-details">
+                <div class="input-box">
+                    <span class="details">Email</span>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="input-box">
+                    <span class="details">Password</span>
+                    <div class="password-wrapper">
+                        <input type="password" name="password" placeholder="Enter your password" id="password" required>
+                        <img src="../login-page/images/eye-close.png" id="eyeicon" alt="Toggle password visibility">
+                    </div>
+            </div>
+            <div class="button">
+                <input type="submit" value="Login">
+            </div>
+            <div class="links" style="text-align:center;margin-top:8px;">
+                <a href="register.html" style="color:white;text-decoration:none;">Create an account</a>
+            </div>
+            <div class="links" style="text-align:center;margin-top:6px;">
+                <a href="forgot password.html" style="color:white;text-decoration:none;">Forgot password?</a>
+            </div>
+            <p id="message" style="color:white; text-align:center; margin-top:10px;"></p>
+        </form>
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="../admin-dashboard/supabase.js"></script>
+        <script src="../user-dashboard/css/js/script.js"></script>
+        <script>
+            let eyeicon = document.getElementById("eyeicon");
+            let password = document.getElementById("password");    
+            eyeicon.onclick = function(){
+                if(password.type == "password"){
+                    password.type = "text";
+                }else{
+                    password.type = "password";
+                }
+            }
+        </script>
+    </div>
+</body>
+</html>

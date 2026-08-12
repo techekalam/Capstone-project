@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Report Item</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="user recent activity.html">Recent Activity</a>
+      <a href="report.html">Report Item</a>
+      <a href="items.html">Browse Items</a>
+      <a href="my-report.html">My Reports</a>
+      <a href="../homepage/index.html">Home</a>
+      <a href="./profile.html">Profile</a>
+      <button id="logoutBtn" type="button">Log Out</button> 
+    </div>
+ 
+  </nav>
+
+  <div class="dashboard-container">
+    <h2 style="color:white;">Report an Item</h2>
+    <form id="reportForm">
+      <select id="itemType" required>
+        <option value="">Select Type</option>
+        <option value="lost">Lost Item</option>
+        <option value="found">Found Item</option>
+      </select>
+      <input type="text" id="itemName" placeholder="Item Name" required>
+      <input type="text" id="category" placeholder="Category (e.g. Electronics, Keys)" required>
+      <input type="text" id="location" placeholder="Location" required>
+      <input type="date" id="date" required>
+      <textarea id="description" placeholder="Description" rows="4"></textarea>
+      <input type="file" id="itemImage" accept="image/*">
+      <button type="submit">Submit Report</button>
+    </form>
+    <p id="message"></p>
+  </div>
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="../admin-dashboard/supabase.js"></script>
+
+  
+  <script src="css/js/script.js"></script>
+</body>
+</html>

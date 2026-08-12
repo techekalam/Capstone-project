@@ -1,0 +1,176 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add User</title>
+    <link rel="stylesheet" href="../login-page/register.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap">
+</head>
+<body>
+    <div class="container">
+        <p style="text-align:center;color:white;"><strong>CUU LOST & FOUND SYSTEM</strong></p>
+        <div class="title" style="color:white;">ADD USER</div>
+        <form id="addUserForm" autocomplete="on">
+            <div class="user-details">
+                <div class="input-box">
+                    <span class="details">Full Name</span>
+                    <input type="text" id="fullName" placeholder="Enter your name" required>
+                </div>
+                <div class="input-box">
+                    <span class="details">Email</span>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="input-box">
+                    <span class="details">Phone Number</span>
+                    <input type="tel" id="phone" placeholder="Enter your phone number">
+                </div>
+                <div class="input-box">
+                    <span class="details">Role</span>
+                    <select id="role" name="role" required>
+                        <option value="" disabled selected>Select a role</option>
+                        <option value="student">Student / User</option>
+                        <option value="admin">Admin</option>
+                        <option value="officer">Officer</option>
+                    </select>
+                </div>
+                <div class="input-box">
+                    <span class="details">One Time Password</span>
+                    <div class="password-wrapper">
+                        <input type="password" placeholder="Enter your password" id="password" required>
+                        <img src="../login-page/images/eye-close.png" alt="Toggle password visibility" id="eyeicon">
+                    </div>
+                </div>
+                <div class="input-box">
+                    <span class="details">Confirm Password</span>
+                    <div class="password-wrapper">
+                        <input type="password" placeholder="Confirm your password" id="confirm-password" required>
+                        <img src="../login-page/images/eye-close.png" alt="Toggle password visibility" id="eyeicon-confirm">
+                    </div>
+                </div>
+            </div>
+            <div class="button">
+                <input type="submit" value="Add user">
+            </div>
+            <p id="message" style="color:white; text-align:center; margin-top:10px;"></p>
+            <div class="links" style="text-align:center;margin-top:8px;">
+                <a href="../admin-dashboard/manage-users.html" style="color:white;text-decoration:none;">Cancel</a>
+            </div>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./supabase.js"></script>
+    <script>
+        const sb = window.supabaseClient;
+
+        // Toggle password visibility
+        const eyeicon = document.getElementById("eyeicon");
+        const password = document.getElementById("password");
+        if (eyeicon && password) {
+            eyeicon.onclick = function() {
+                password.type = password.type === "password" ? "text" : "password";
+            };
+        }
+
+        const eyeiconConfirm = document.getElementById("eyeicon-confirm");
+        const confirmPassword = document.getElementById("confirm-password");
+        if (eyeiconConfirm && confirmPassword) {
+            eyeiconConfirm.onclick = function() {
+                confirmPassword.type = confirmPassword.type === "password" ? "text" : "password";
+            };
+        }
+
+        // Add User Form Submission
+        const addUserForm = document.getElementById("addUserForm");
+        if (addUserForm) {
+            addUserForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const message = document.getElementById("message");
+
+                const fullName = document.getElementById("fullName").value.trim();
+                const email = document.getElementById("email").value.trim();
+                const phone = document.getElementById("phone").value.trim();
+                const role = document.getElementById("role").value;
+                const passVal = password.value;
+                const confirmPassVal = confirmPassword.value;
+
+                if (!sb) {
+                    if (message) {
+                        message.style.color = "#ef4444";
+                        message.textContent = "Database connection unavailable. Please refresh.";
+                    }
+                    return;
+                }
+
+                if (passVal !== confirmPassVal) {
+                    if (message) {
+                        message.style.color = "#ef4444";
+                        message.textContent = "Passwords do not match!";
+                    }
+                    return;
+                }
+
+                if (!email.toLowerCase().endsWith('@cavendish.ac.ug')) {
+                    if (message) {
+                        message.style.color = "#ef4444";
+                        message.textContent = "Access denied: Only @cavendish.ac.ug emails are allowed.";
+                    }
+                    return;
+                }
+
+                if (message) {
+                    message.style.color = "#ffffff";
+                    message.textContent = "Creating user account...";
+                }
+
+                // 1) Register user via Supabase Auth
+                const { data: signUpData, error: signUpErr } = await sb.auth.signUp({
+                    email: email,
+                    password: passVal,
+                    options: {
+                        data: {
+                            full_name: fullName,
+                            phone: phone,
+                            role: role
+                        }
+                    }
+                });
+
+                if (signUpErr) {
+                    console.error("SignUp error:", signUpErr);
+                    if (message) {
+                        message.style.color = "#ef4444";
+                        message.textContent = signUpErr.message;
+                    }
+                    return;
+                }
+
+                // 2) Write profile row into Profiles table
+                if (signUpData && signUpData.user) {
+                    const userId = signUpData.user.id;
+                    const { error: profileErr } = await sb.from('Profiles').upsert({
+                        id: userId,
+                        full_name: fullName,
+                        email: email,
+                        phone: phone,
+                        role: role
+                    });
+
+                    if (profileErr) {
+                        console.warn("Profiles upsert warning:", profileErr);
+                    }
+                }
+
+                if (message) {
+                    message.style.color = "#22c55e";
+                    message.textContent = "User added successfully! Redirecting...";
+                }
+
+                setTimeout(() => {
+                    window.location.href = '../admin-dashboard/manage-users.html';
+                }, 1500);
+            });
+        }
+    </script>
+</body>
+</html>
