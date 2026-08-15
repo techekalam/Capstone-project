@@ -1,4 +1,4 @@
-﻿// ── Auth guard: only allow admins ──────────────────────────────────────
+// ── Auth guard: allow admins & claims officers ─────────────────────────────
 (function() {
     const sb = window.supabaseClient;
     if (!sb) return;
@@ -22,11 +22,19 @@
 
         const role = (profile && profile.role ? profile.role : '').toLowerCase();
         const emailLower = session.user.email.toLowerCase();
-        const isAdmin = role === 'admin' || emailLower.includes('admin');
+        const isAuthorized = role === 'admin' || role.includes('officer') || emailLower.includes('admin') || emailLower.includes('officer');
 
-        if (!isAdmin) {
+        if (!isAuthorized) {
             window.location.replace('../login-page/login.html');
             return;
+        }
+
+        // Adjust back button for officers
+        const isOfficerOnly = (role.includes('officer') || emailLower.includes('officer')) && !role.includes('admin') && !emailLower.includes('admin');
+        const backBtn = document.getElementById('back-to-dashboard-btn');
+        if (backBtn && isOfficerOnly) {
+            backBtn.href = '../officer-dashboard/lost and found officer.html';
+            backBtn.innerHTML = '&larr; Back to Officer Dashboard';
         }
 
         // Wire logout buttons
